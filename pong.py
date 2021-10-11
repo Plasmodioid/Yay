@@ -126,6 +126,7 @@ def startbutton(text):
 startbutton("Start")
 score = 0
 highscore = 0
+invin = 0
 
 def main():
     global score
@@ -134,6 +135,7 @@ def main():
     global addable
     global game_active
     global highscore
+    global invin
 
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
@@ -153,17 +155,22 @@ def main():
             # If the close button is clicked, quit running
             if event.type == pygame.QUIT:
                 sys.exit()
+
+        invin += 1
                 
         ballpaddlecollide = pygame.sprite.groupcollide(paddles, balls, False, False)
         if ballpaddlecollide:
-            if int(ball.rect.bottom) > paddle.rect.bottom:
-                speedx*=-1
-            else:
-                speedy*=-1
-                score+=25
-                if score >= highscore:
-                    highscore = score
-                addable = True
+            if invin > 35:
+                if int(ball.rect.bottom) > paddle.rect.bottom:
+                    speedx*=-1
+                    invin = 0
+                else:
+                    speedy*=-1
+                    score+=25
+                    if score >= highscore:
+                        highscore = score
+                    addable = True
+                    invin = 0
 
         if score > 0:
             if score%50 == 0:
